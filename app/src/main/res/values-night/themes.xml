@@ -1,0 +1,8 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SequeniaMovies" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/toolbarBlue</item>
+        <item name="android:navigationBarColor">@color/toolbarBlue</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
