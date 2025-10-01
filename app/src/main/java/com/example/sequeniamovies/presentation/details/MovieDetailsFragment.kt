@@ -85,10 +85,11 @@ class MovieDetailsFragment : Fragment() {
 
         // Жанры + год
         val genresText = movie.genres.joinToString(", ") { it.name }
-        binding.tvMeta.text = if (genresText.isNotBlank())
+        binding.tvMeta.text = if (genresText.isNotBlank()) {
             getString(R.string.meta_format, genresText, movie.year)
-        else
-            "${movie.year} год"
+        } else {
+            getString(R.string.year_format, movie.year)
+        }
 
         // Рейтинг: значение + метка
         if (movie.rating != null) {

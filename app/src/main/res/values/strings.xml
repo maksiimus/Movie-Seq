@@ -1,11 +1,23 @@
 <resources>
     <string name="app_name">Sequenia Movies</string>
+
+    <!-- Заголовки -->
     <string name="title_movies">Фильмы</string>
     <string name="genres">Жанры</string>
+
+    <!-- Действия / ошибки -->
     <string name="retry">ПОВТОРИТЬ</string>
+
+    <!-- Детали фильма -->
     <string name="rating_label">КиноПоиск</string>
-    <string name="meta_format">%1$s,  %2$d год</string>
-    <string name="rating_with_label">%1$s %2$s.</string>
+    <!-- жанры + год -->
+    <string name="meta_format">%1$s, %2$d год</string>
+    <!-- только год, когда жанров нет -->
+    <string name="year_format">%1$d год</string>
+
+    <!-- Если где-то нужен склеенный рейтинг (сейчас у нас раздельные TextView) -->
+    <string name="rating_with_label">%1$s %2$s</string>
+
     <string name="rating_unknown">—</string>
     <string name="poster">Poster</string>
 </resources>
