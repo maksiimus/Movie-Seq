@@ -2,7 +2,6 @@ package com.example.sequeniamovies.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -101,12 +100,11 @@ class MoviesScreenAdapter(
         }
 
         fun bindSelection(selected: Boolean) {
-            val ctx = binding.root.context
-            val selectedBg = ContextCompat.getDrawable(
-                ctx,
-                R.drawable.bg_genre_selected
+            // фон ставим на контейнер, не на TextView
+            binding.genreContainer.setBackgroundResource(
+                if (selected) R.drawable.bg_genre_selected
+                else android.R.color.white
             )
-            binding.tvGenre.background = if (selected) selectedBg else null
         }
     }
 
@@ -120,9 +118,9 @@ class MoviesScreenAdapter(
             binding.tvName.text = m.localizedName
             binding.ivPoster.load(m.imageUrl ?: "") {
                 crossfade(true)
-                placeholder(R.drawable.ic_no_image)
-                error(R.drawable.ic_no_image)
-                fallback(R.drawable.ic_no_image)
+                placeholder(R.drawable.no_img)
+                error(R.drawable.no_img)
+                fallback(R.drawable.no_img)
             }
             binding.root.setOnClickListener { onClick(m) }
         }

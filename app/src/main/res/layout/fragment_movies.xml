@@ -21,27 +21,23 @@
             android:text="@string/title_movies"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
+            android:textAlignment="center"
             android:fontFamily="sans-serif-medium"
             android:paddingTop="16dp"
             android:paddingBottom="16dp" />
     </LinearLayout>
 
-    <!-- Контент под аппбаром -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+
         android:clipToPadding="false"
         android:overScrollMode="always"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
 
-    <!-- Спиннер поверх -->
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="48dp"

@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvGenre"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/genreContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:textColor="#000000"
-    android:textSize="16sp"
-    android:fontFamily="sans-serif"
+    android:orientation="vertical"
     android:background="#FFFFFF"
-    android:foreground="?attr/selectableItemBackground" />
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tvGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:gravity="start|center_vertical"
+        tools:text="Боевик" />
+</LinearLayout>

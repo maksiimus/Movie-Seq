@@ -75,9 +75,9 @@ class MovieDetailsFragment : Fragment() {
         // Постер
         binding.ivCover.load(movie.imageUrl ?: "") {
             crossfade(true)
-            placeholder(R.drawable.ic_no_image)
-            error(R.drawable.ic_no_image)
-            fallback(R.drawable.ic_no_image)
+            placeholder(R.drawable.no_img)
+            error(R.drawable.no_img)
+            fallback(R.drawable.no_img)
         }
 
         // Локализованное название

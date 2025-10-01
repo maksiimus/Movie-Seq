@@ -72,7 +72,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/poster"
-                    tools:src="@drawable/ic_no_image" />
+                    tools:src="@drawable/no_img" />
             </androidx.cardview.widget.CardView>
 
             <!-- 3) Локализованное название -->

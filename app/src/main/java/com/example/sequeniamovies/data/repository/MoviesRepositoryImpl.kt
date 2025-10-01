@@ -5,6 +5,8 @@ import com.example.sequeniamovies.data.network.mapper.MovieMapper
 import com.example.sequeniamovies.domain.entity.Genre
 import com.example.sequeniamovies.domain.entity.Movie
 import com.example.sequeniamovies.domain.repository.MoviesRepository
+import java.text.Collator
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,9 +30,21 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     override fun buildGenres(movies: List<Movie>): List<Genre> {
-        val set = linkedSetOf<String>()
-        movies.forEach { m -> m.genres.forEach { g -> set += g.name.lowercase() } }
-        return set.map { name -> Genre(name) }
+        val locale = Locale.getDefault()
+        val collator = Collator.getInstance(locale).apply {
+            strength = Collator.PRIMARY // без учёта регистра/диакритики
+        }
+
+        // Собираем уникальные жанры и сортируем коллатором
+        val names = movies.asSequence()
+            .flatMap { it.genres.asSequence() }
+            .map { it.name.trim() }
+            .filter { it.isNotEmpty() }
+            .map { it.lowercase(locale) }
+            .distinct()                          // убрали дубли
+            .sortedWith { a, b -> collator.compare(a, b) } // локалезависимая сортировка
+
+        return names.map(::Genre).toList()
     }
 
     override fun filterMoviesByGenre(movies: List<Movie>, genre: Genre?): List<Movie> {
