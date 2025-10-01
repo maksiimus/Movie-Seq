@@ -15,21 +15,17 @@ import coil.load
 import com.example.sequeniamovies.MoviesApp
 import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMovieDetailsBinding
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class MovieDetailsFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<MovieDetailsViewModel> { viewModelFactory }
     private val args by navArgs<MovieDetailsFragmentArgs>()
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private var activityToolbar: MaterialToolbar? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,7 +42,9 @@ class MovieDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activityToolbar = requireActivity().findViewById(R.id.toolbar)
+        // Кнопка "назад" в собственной Top App Bar
+        binding.ivBack.setOnClickListener { findNavController().navigateUp() }
+
         if (savedInstanceState == null) {
             viewModel.load(args.movieId)
         }
@@ -54,11 +52,11 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.state.observe(viewLifecycleOwner) { st ->
+            when (st) {
                 is MovieDetailsState.Loading -> setLoadingState()
-                is MovieDetailsState.Content -> setContentState(it)
-                is MovieDetailsState.Error -> setErrorState(it)
+                is MovieDetailsState.Content -> setContentState(st)
+                is MovieDetailsState.Error -> setErrorState(st)
             }
         }
     }
@@ -70,12 +68,11 @@ class MovieDetailsFragment : Fragment() {
 
     private fun setContentState(content: MovieDetailsState.Content) {
         val movie = content.movie
-        activityToolbar?.apply {
-            title = movie.originalName
-            setNavigationIcon(R.drawable.ic_back)
-            setNavigationOnClickListener { findNavController().navigateUp() }
-        }
 
+        // Заголовок в Top App Bar
+        binding.tvOriginalTitle.text = movie.originalName ?: movie.localizedName
+
+        // Постер
         binding.ivCover.load(movie.imageUrl ?: "") {
             crossfade(true)
             placeholder(R.drawable.ic_no_image)
@@ -83,24 +80,34 @@ class MovieDetailsFragment : Fragment() {
             fallback(R.drawable.ic_no_image)
         }
 
+        // Локализованное название
         binding.tvLocalizedName.text = movie.localizedName
+
+        // Жанры + год
         val genresText = movie.genres.joinToString(", ") { it.name }
         binding.tvMeta.text = if (genresText.isNotBlank())
             getString(R.string.meta_format, genresText, movie.year)
-        else "${movie.year} год."
+        else
+            "${movie.year} год"
 
-        binding.tvRating.text = movie.rating?.let { value ->
-            getString(
-                R.string.rating_with_label,
-                value.toString(),
-                getString(R.string.rating_label)
-            )
-        } ?: getString(R.string.rating_unknown)
+        // Рейтинг: значение + метка
+        if (movie.rating != null) {
+            binding.tvRatingValue.text = movie.rating.toString()
+            binding.tvRatingLabel.isVisible = true
+        } else {
+            binding.tvRatingValue.text = getString(R.string.rating_unknown)
+            binding.tvRatingLabel.isVisible = false
+        }
 
+        // Описание
         binding.tvDescription.text = movie.description.orEmpty()
 
+        // Показ контента
         binding.progress.isVisible = false
         binding.scroll.isVisible = true
+
+        // На всякий случай возвращаемся к началу
+        binding.scroll.post { binding.scroll.scrollTo(0, 0) }
     }
 
     private fun setErrorState(error: MovieDetailsState.Error) {
@@ -113,12 +120,6 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        activityToolbar?.apply {
-            title = getString(R.string.title_movies)
-            navigationIcon = null
-            setNavigationOnClickListener(null)
-        }
-        activityToolbar = null
         _binding = null
     }
 }
