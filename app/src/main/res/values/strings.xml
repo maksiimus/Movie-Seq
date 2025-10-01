@@ -20,4 +20,5 @@
 
     <string name="rating_unknown">—</string>
     <string name="poster">Poster</string>
+    <string name="kinopoisk">КиноПоиск</string>
 </resources>
