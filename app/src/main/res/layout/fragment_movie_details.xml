@@ -64,11 +64,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardPoster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="132dp"
+                android:layout_height="201dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
-                android:layout_marginHorizontal="144dp"
                 app:cardCornerRadius="4dp"
                 app:cardUseCompatPadding="false">
 
@@ -77,9 +76,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/poster"
-                    android:scaleType="centerCrop"
-                    tools:src="@drawable/no_img" />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
             </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/tvLocalizedName"

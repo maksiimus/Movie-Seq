@@ -16,6 +16,7 @@ import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMovieDetailsBinding
 import java.util.Locale
 import javax.inject.Inject
+import coil.size.Scale
 
 class MovieDetailsFragment : Fragment() {
 
@@ -58,6 +59,7 @@ class MovieDetailsFragment : Fragment() {
                 placeholder(R.drawable.no_img)
                 error(R.drawable.no_img)
                 fallback(R.drawable.no_img)
+                scale(Scale.FIT)
             }
 
             binding.tvLocalizedName.text = movie.localizedName
