@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +14,6 @@ import coil.load
 import com.example.sequeniamovies.MoviesApp
 import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMovieDetailsBinding
-import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
 import javax.inject.Inject
 
@@ -34,92 +32,63 @@ class MovieDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Кнопка "назад" в собственной Top App Bar
         binding.ivBack.setOnClickListener { findNavController().navigateUp() }
 
         if (savedInstanceState == null) {
             viewModel.load(args.movieId)
         }
-        observeViewModel()
-    }
 
-    private fun observeViewModel() {
-        viewModel.state.observe(viewLifecycleOwner) { st ->
-            when (st) {
-                is MovieDetailsState.Loading -> setLoadingState()
-                is MovieDetailsState.Content -> setContentState(st)
-                is MovieDetailsState.Error -> setErrorState(st)
+        viewModel.movie.observe(viewLifecycleOwner) { movie ->
+            if (movie == null) {
+                // Ошибки/загрузки по ТЗ не показываем — просто уходим назад
+                findNavController().navigateUp()
+                return@observe
             }
-        }
-    }
 
-    private fun setLoadingState() {
-        binding.progress.isVisible = true
-        binding.scroll.isVisible = false
-    }
+            // Top bar title
+            binding.tvOriginalTitle.text = movie.originalName ?: movie.localizedName
 
-    private fun setContentState(content: MovieDetailsState.Content) {
-        val movie = content.movie
-
-        // Заголовок в Top App Bar
-        binding.tvOriginalTitle.text = movie.originalName ?: movie.localizedName
-
-        // Постер
-        binding.ivCover.load(movie.imageUrl ?: "") {
-            crossfade(true)
-            placeholder(R.drawable.no_img)
-            error(R.drawable.no_img)
-            fallback(R.drawable.no_img)
-        }
-
-        // Локализованное название
-        binding.tvLocalizedName.text = movie.localizedName
-
-        // Жанры + год
-        val genresText = movie.genres.joinToString(", ") { it.name }
-        binding.tvMeta.text = if (genresText.isNotBlank()) {
-            getString(R.string.meta_format, genresText, movie.year)
-        } else {
-            getString(R.string.year_format, movie.year)
-        }
-
-        // Рейтинг: значение + метка
-        if (movie.rating != null) {
-            binding.tvRatingValue.text = movie.rating.let {
-                String.format(Locale.US, "%.1f", it)
+            // Poster
+            binding.ivCover.load(movie.imageUrl ?: "") {
+                crossfade(true)
+                placeholder(R.drawable.no_img)
+                error(R.drawable.no_img)
+                fallback(R.drawable.no_img)
             }
-            binding.tvRatingLabel.isVisible = true
-        } else {
-            binding.tvRatingValue.text = getString(R.string.rating_unknown)
-            binding.tvRatingLabel.isVisible = false
+
+            // Localized name
+            binding.tvLocalizedName.text = movie.localizedName
+
+            // Genres + year
+            val genresText = movie.genres.joinToString(", ") { it.name }
+            binding.tvMeta.text = if (genresText.isNotBlank()) {
+                getString(R.string.meta_format, genresText, movie.year)
+            } else {
+                "${movie.year} год"
+            }
+
+            // Rating (точка как разделитель)
+            if (movie.rating != null) {
+                binding.tvRatingValue.text = String.format(Locale.US, "%.1f", movie.rating)
+                binding.tvRatingLabel.visibility = View.VISIBLE
+            } else {
+                binding.tvRatingValue.text = getString(R.string.rating_unknown)
+                binding.tvRatingLabel.visibility = View.GONE
+            }
+
+            // Description
+            binding.tvDescription.text = movie.description.orEmpty()
+
+            // Scroll to top
+            binding.scroll.post { binding.scroll.scrollTo(0, 0) }
         }
-
-        // Описание
-        binding.tvDescription.text = movie.description.orEmpty()
-
-        // Показ контента
-        binding.progress.isVisible = false
-        binding.scroll.isVisible = true
-
-        // На всякий случай возвращаемся к началу
-        binding.scroll.post { binding.scroll.scrollTo(0, 0) }
-    }
-
-    private fun setErrorState(error: MovieDetailsState.Error) {
-        binding.progress.isVisible = false
-        binding.scroll.isVisible = false
-        Snackbar.make(binding.root, error.message, Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.retry)) { viewModel.load(args.movieId) }
-            .show()
     }
 
     override fun onDestroyView() {
