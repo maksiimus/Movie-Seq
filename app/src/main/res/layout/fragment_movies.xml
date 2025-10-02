@@ -6,39 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Top App Bar (56dp, #0E3165, центрированный заголовок) -->
+    <!-- Top App Bar -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="vertical"
-        android:background="#0E3165">
+        android:background="#0E3165"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvTopTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/title_movies"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textAlignment="center"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="16dp"
+            android:text="@string/title_movies"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
     </LinearLayout>
 
+    <!-- Контент -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-
         android:clipToPadding="false"
         android:overScrollMode="always"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
 
+    <!-- Лоадер -->
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="48dp"
@@ -47,5 +48,56 @@
         android:indeterminate="true"
         android:indeterminateTint="#FFC967"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
+
+    <!-- Кастомный бар ошибки (поверх, снизу) -->
+    <LinearLayout
+        android:id="@+id/errorBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_error"
+        android:elevation="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- Сообщение -->
+        <TextView
+            android:id="@+id/tvErrorMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="18dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0"
+            android:lineHeight="20sp"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            tools:text="Ошибка подключения сети" />
+
+        <!-- Действие -->
+        <TextView
+            android:id="@+id/tvRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0"
+            android:lineHeight="16sp"
+            android:text="@string/retry"
+            android:textColor="#FFC967"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 </FrameLayout>

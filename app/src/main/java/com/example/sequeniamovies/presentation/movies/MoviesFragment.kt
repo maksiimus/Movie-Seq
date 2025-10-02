@@ -15,13 +15,11 @@ import com.example.sequeniamovies.MoviesApp
 import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMoviesBinding
 import com.example.sequeniamovies.presentation.adapter.MoviesScreenAdapter
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class MoviesFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<MoviesViewModel> { viewModelFactory }
 
     private var _binding: FragmentMoviesBinding? = null
@@ -51,8 +49,10 @@ class MoviesFragment : Fragment() {
         binding.rvList.adapter = adapter
         binding.rvList.addItemDecoration(MoviesSpacingDecoration())
 
-        observeViewModel()
+        // retry action
+        binding.tvRetry.setOnClickListener { viewModel.loadIfNeeded() }
 
+        observeViewModel()
         viewModel.loadIfNeeded()
     }
 
@@ -66,10 +66,7 @@ class MoviesFragment : Fragment() {
         )
     }
 
-    private fun makeGridLayoutManager() = GridLayoutManager(
-        requireContext(),
-        2
-    ).apply {
+    private fun makeGridLayoutManager() = GridLayoutManager(requireContext(), 2).apply {
         spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int =
                 when (adapter.getItemViewType(position)) {
@@ -80,25 +77,24 @@ class MoviesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.state.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is MoviesScreenState.Loading -> {
                     binding.progress.isVisible = true
                     binding.rvList.isVisible = false
+                    binding.errorBar.isVisible = false
                 }
-
                 is MoviesScreenState.Content -> {
                     binding.progress.isVisible = false
                     binding.rvList.isVisible = true
-                    adapter.submitList(it.items)
+                    binding.errorBar.isVisible = false
+                    adapter.submitList(state.items)
                 }
-
                 is MoviesScreenState.Error -> {
                     binding.progress.isVisible = false
                     binding.rvList.isVisible = false
-                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(getString(R.string.retry)) { viewModel.loadIfNeeded() }
-                        .show()
+                    binding.errorBar.isVisible = true
+                    binding.tvErrorMessage.text = state.message
                 }
             }
         }
