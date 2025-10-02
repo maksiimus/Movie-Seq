@@ -15,6 +15,8 @@ import com.example.sequeniamovies.MoviesApp
 import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMoviesBinding
 import com.example.sequeniamovies.presentation.adapter.MoviesScreenAdapter
+import com.example.sequeniamovies.presentation.movies.decoration.MoviesSpacingDecoration
+import com.example.sequeniamovies.presentation.movies.decoration.SectionSpacingDecoration
 import javax.inject.Inject
 
 class MoviesFragment : Fragment() {
@@ -47,7 +49,9 @@ class MoviesFragment : Fragment() {
         binding.rvList.layoutManager = makeGridLayoutManager()
         binding.rvList.setHasFixedSize(true)
         binding.rvList.adapter = adapter
+        binding.rvList.addItemDecoration(SectionSpacingDecoration(adapter, requireContext()))
         binding.rvList.addItemDecoration(MoviesSpacingDecoration())
+
 
         // retry action
         binding.tvRetry.setOnClickListener { viewModel.loadIfNeeded() }

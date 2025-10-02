@@ -1,4 +1,4 @@
-package com.example.sequeniamovies.presentation.movies
+package com.example.sequeniamovies.presentation.movies.decoration
 
 import android.content.res.Resources
 import android.graphics.Rect
@@ -30,7 +30,7 @@ class MoviesSpacingDecoration(
         val adapter = parent.adapter as? MoviesScreenAdapter ?: return
         val type = adapter.getItemViewType(pos)
 
-        if (type != MoviesScreenAdapter.TYPE_MOVIE) {
+        if (type != MoviesScreenAdapter.Companion.TYPE_MOVIE) {
             outRect.set(0, 0, 0, 0)
             return
         }
