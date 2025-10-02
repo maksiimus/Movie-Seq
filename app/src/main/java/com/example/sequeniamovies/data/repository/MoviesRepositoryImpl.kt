@@ -32,17 +32,16 @@ class MoviesRepositoryImpl @Inject constructor(
     override fun buildGenres(movies: List<Movie>): List<Genre> {
         val locale = Locale.getDefault()
         val collator = Collator.getInstance(locale).apply {
-            strength = Collator.PRIMARY // без учёта регистра/диакритики
+            strength = Collator.PRIMARY
         }
 
-        // Собираем уникальные жанры и сортируем коллатором
         val names = movies.asSequence()
             .flatMap { it.genres.asSequence() }
             .map { it.name.trim() }
             .filter { it.isNotEmpty() }
             .map { it.lowercase(locale) }
-            .distinct()                          // убрали дубли
-            .sortedWith { a, b -> collator.compare(a, b) } // локалезависимая сортировка
+            .distinct()
+            .sortedWith { a, b -> collator.compare(a, b) }
 
         return names.map(::Genre).toList()
     }

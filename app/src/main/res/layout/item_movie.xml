@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Постер в CardView для corner 4dp -->
     <androidx.cardview.widget.CardView
         android:id="@+id/posterCard"
         android:layout_width="0dp"

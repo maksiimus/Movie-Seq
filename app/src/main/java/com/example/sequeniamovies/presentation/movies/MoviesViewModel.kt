@@ -96,6 +96,6 @@ class MoviesViewModel @Inject constructor(
         is UnknownHostException, is SocketTimeoutException, is ConnectException ->
             "Ошибка подключения сети"
 
-        else -> "Не удалось загрузить данные"
+        else -> "Ошибка подключения сети"
     }
 }

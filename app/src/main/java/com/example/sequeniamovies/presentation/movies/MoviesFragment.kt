@@ -52,8 +52,6 @@ class MoviesFragment : Fragment() {
         binding.rvList.addItemDecoration(SectionSpacingDecoration(adapter, requireContext()))
         binding.rvList.addItemDecoration(MoviesSpacingDecoration())
 
-
-        // retry action
         binding.tvRetry.setOnClickListener { viewModel.loadIfNeeded() }
 
         observeViewModel()

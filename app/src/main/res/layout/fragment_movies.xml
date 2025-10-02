@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 1) Top App Bar -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
@@ -31,7 +30,6 @@
             android:textAlignment="center" />
     </LinearLayout>
 
-    <!-- 2) Контент: список, привязанный к низу шапки -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="0dp"
@@ -58,7 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
-    <!-- Кастомный бар ошибки (поверх, снизу) -->
     <LinearLayout
         android:id="@+id/errorBar"
         android:layout_width="0dp"

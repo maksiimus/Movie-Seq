@@ -19,7 +19,7 @@ class MovieDetailsViewModel @Inject constructor(
     fun load(movieId: Int) {
         viewModelScope.launch {
             val m = runCatching { getById(movieId) }.getOrNull()
-            _movie.value = m // null => нет данных (баг) — фрагмент уйдёт назад
+            _movie.value = m
         }
     }
 }

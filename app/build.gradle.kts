@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     id("kotlin-parcelize")
-    alias(libs.plugins.navigation.safeargs) // опционально, если используем SafeArgs
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    // base
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,30 +52,29 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.recyclerview)
 
-    // lifecycle & coroutines
+
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
     implementation(libs.coroutines.android)
 
-    // navigation
+
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
-    // networking
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.moshi.kotlin)
-    // images
+
     implementation(libs.coil)
 
-    // dagger (без dagger-android)
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
 
-    // tests
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

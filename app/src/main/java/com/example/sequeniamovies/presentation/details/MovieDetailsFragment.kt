@@ -47,15 +47,12 @@ class MovieDetailsFragment : Fragment() {
 
         viewModel.movie.observe(viewLifecycleOwner) { movie ->
             if (movie == null) {
-                // Ошибки/загрузки по ТЗ не показываем — просто уходим назад
                 findNavController().navigateUp()
                 return@observe
             }
 
-            // Top bar title
-            binding.tvOriginalTitle.text = movie.originalName ?: movie.localizedName
+            binding.tvOriginalTitle.text = movie.originalName
 
-            // Poster
             binding.ivCover.load(movie.imageUrl ?: "") {
                 crossfade(true)
                 placeholder(R.drawable.no_img)
@@ -63,10 +60,8 @@ class MovieDetailsFragment : Fragment() {
                 fallback(R.drawable.no_img)
             }
 
-            // Localized name
             binding.tvLocalizedName.text = movie.localizedName
 
-            // Genres + year
             val genresText = movie.genres.joinToString(", ") { it.name }
             binding.tvMeta.text = if (genresText.isNotBlank()) {
                 getString(R.string.meta_format, genresText, movie.year)
@@ -74,7 +69,6 @@ class MovieDetailsFragment : Fragment() {
                 "${movie.year} год"
             }
 
-            // Rating (точка как разделитель)
             if (movie.rating != null) {
                 binding.tvRatingValue.text = String.format(Locale.US, "%.1f", movie.rating)
                 binding.tvRatingLabel.visibility = View.VISIBLE
@@ -83,11 +77,7 @@ class MovieDetailsFragment : Fragment() {
                 binding.tvRatingLabel.visibility = View.GONE
             }
 
-            // Description
             binding.tvDescription.text = movie.description.orEmpty()
-
-            // Scroll to top
-            binding.scroll.post { binding.scroll.scrollTo(0, 0) }
         }
     }
 
