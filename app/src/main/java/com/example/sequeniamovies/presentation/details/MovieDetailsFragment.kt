@@ -16,6 +16,7 @@ import com.example.sequeniamovies.MoviesApp
 import com.example.sequeniamovies.R
 import com.example.sequeniamovies.databinding.FragmentMovieDetailsBinding
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 import javax.inject.Inject
 
 class MovieDetailsFragment : Fragment() {
@@ -93,7 +94,9 @@ class MovieDetailsFragment : Fragment() {
 
         // Рейтинг: значение + метка
         if (movie.rating != null) {
-            binding.tvRatingValue.text = movie.rating.toString()
+            binding.tvRatingValue.text = movie.rating.let {
+                String.format(Locale.US, "%.1f", it)
+            }
             binding.tvRatingLabel.isVisible = true
         } else {
             binding.tvRatingValue.text = getString(R.string.rating_unknown)

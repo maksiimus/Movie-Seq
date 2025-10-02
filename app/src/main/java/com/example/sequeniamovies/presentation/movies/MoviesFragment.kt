@@ -49,6 +49,7 @@ class MoviesFragment : Fragment() {
         binding.rvList.layoutManager = makeGridLayoutManager()
         binding.rvList.setHasFixedSize(true)
         binding.rvList.adapter = adapter
+        binding.rvList.addItemDecoration(MoviesSpacingDecoration())
 
         observeViewModel()
 
