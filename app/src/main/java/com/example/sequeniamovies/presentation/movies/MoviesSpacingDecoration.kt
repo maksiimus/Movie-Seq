@@ -8,13 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sequeniamovies.presentation.adapter.MoviesScreenAdapter
 import kotlin.math.roundToInt
 
-/**
- * Отступы только для карточек фильмов:
- * - слева/справа по краям экрана: 16dp
- * - между карточками по горизонтали: 8dp
- * - вертикальные между карточками: 16dp
- * Жанры/заголовки не трогаем.
- */
 class MoviesSpacingDecoration(
 ) : RecyclerView.ItemDecoration() {
 
@@ -38,16 +31,12 @@ class MoviesSpacingDecoration(
         val type = adapter.getItemViewType(pos)
 
         if (type != MoviesScreenAdapter.TYPE_MOVIE) {
-            // Для заголовков/жанров — никаких внешних отступов
             outRect.set(0, 0, 0, 0)
             return
         }
 
-        // Карточки фильмов (Grid 2 колонки)
         val lp = view.layoutParams as GridLayoutManager.LayoutParams
         val isLeftColumn = lp.spanIndex == 0
-
-        outRect.top = gapV
         outRect.bottom = gapV
         outRect.left  = if (isLeftColumn) edge else gapH / 2
         outRect.right = if (isLeftColumn) gapH / 2 else edge
