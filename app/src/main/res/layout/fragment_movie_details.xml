@@ -64,8 +64,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardPoster"
-                android:layout_width="132dp"
-                android:layout_height="201dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
                 app:cardCornerRadius="4dp"
@@ -73,6 +73,7 @@
 
                 <ImageView
                     android:id="@+id/ivCover"
+                    tools:src="@drawable/no_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/poster"
